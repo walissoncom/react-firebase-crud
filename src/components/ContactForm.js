@@ -10,6 +10,20 @@ const ContactForm = (props) => {
 
     const [values, setValues] = useState(initialFieldValues);
 
+    useEffect(() => {
+        if (props.currentId === '') {
+            setValues({
+                ...initialFieldValues
+            })
+        } else {
+            setValues({
+                ...props.contactObjects[props.currentId]
+            })
+        }
+
+
+    }, [props.currentId, props.contactObjects]);
+
     const handleInputChange = e => {
         let { name, value } = e.target;
         setValues({
@@ -82,7 +96,7 @@ const ContactForm = (props) => {
             <div className="form-group">
                 <input
                     type="submit"
-                    value="Save"
+                    value={props.currentId === '' ? 'Save' : 'Update'}
                     className="btn btn-primary btn-block" />
             </div>
 
