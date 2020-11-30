@@ -4,6 +4,18 @@ import firebaseDb from '../firebase';
 
 const Contacts = () => {
 
+    const [contactObjects, setContactObjects] = useState({});
+
+    useEffect(() => {
+        firebaseDb.child('contacts').on('value', snapshot => {
+            if (snapshot.val() != null) {
+                setContactObjects({
+                    ...snapshot.val()
+                })
+            }
+        })
+    }, [])
+
     const addOrEdit = obj => {
         firebaseDb.child('contacts').push(
             obj,
@@ -27,7 +39,28 @@ const Contacts = () => {
                     <ContactForm addOrEdit={addOrEdit} />
                 </div>
                 <div className="col-md-7">
-                    <div>List of contacts</div>
+                    <table className="table table-borderless table-stripped">
+                        <thead className="thead-light">
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Mobile</th>
+                                <th>Email</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                Object.keys(contactObjects).map(id => {
+                                    return <tr key={id}>
+                                        <td>{contactObjects[id].fullName}</td>
+                                        <td>{contactObjects[id].mobile}</td>
+                                        <td>{contactObjects[id].email}</td>
+                                        <td></td>
+                                    </tr>
+                                })
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </>
