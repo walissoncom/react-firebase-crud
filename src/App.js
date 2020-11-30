@@ -1,8 +1,11 @@
+import Contacts from "./components/Contacts";
 
 function App() {
   return (
-    <div className="app">
-      <h1>React JS and Firebase CRUD</h1>
+    <div className="row">
+      <div className="col-md-8 offset-md-2">
+        <Contacts />
+      </div>
     </div>
   );
 }
