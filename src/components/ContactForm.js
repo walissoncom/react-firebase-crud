@@ -5,7 +5,8 @@ const ContactForm = (props) => {
     const initialFieldValues = {
         fullName: '',
         mobile: '',
-        email: ''
+        email: '',
+        address: ''
     }
 
     const [values, setValues] = useState(initialFieldValues);

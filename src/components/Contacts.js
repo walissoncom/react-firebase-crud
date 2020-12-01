@@ -9,16 +9,17 @@ const Contacts = () => {
 
     useEffect(() => {
         firebaseDb.child('contacts').on('value', snapshot => {
-            if (snapshot.val() != null) {
+            if (snapshot.val() != null)
                 setContactObjects({
                     ...snapshot.val()
                 })
-            }
+            else
+                setContactObjects({});
         })
     }, [])
 
     const addOrEdit = obj => {
-        if (currentId == '') {
+        if (currentId === '') {
             firebaseDb.child('contacts').push(
                 obj,
                 err => {
@@ -32,6 +33,19 @@ const Contacts = () => {
         } else {
             firebaseDb.child(`contacts/${currentId}`).set(
                 obj,
+                err => {
+                    if (err)
+                        console.log(err);
+                    else
+                        setCurrentId('');
+                }
+            )
+        }
+    }
+
+    const onDelete = key => {
+        if (window.confirm('Are you sure to delete this record?')) {
+            firebaseDb.child(`contacts/${key}`).remove(
                 err => {
                     if (err)
                         console.log(err);
@@ -75,7 +89,7 @@ const Contacts = () => {
                                             <button className="btn text-primary" onClick={() => { setCurrentId(id) }}>
                                                 <i className="fas fa-pencil-alt"></i>
                                             </button>
-                                            <button className="btn text-danger">
+                                            <button className="btn text-danger" onClick={() => onDelete(id)}>
                                                 <i className="fas fa-trash-alt"></i>
                                             </button>
                                         </td>
